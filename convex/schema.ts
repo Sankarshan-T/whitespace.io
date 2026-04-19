@@ -6,5 +6,9 @@ export default defineSchema({
         name: v.string(),
         email: v.string(),
         image: v.string(),
+    }),
+    teams: defineTable({
+        teamName: v.string(),
+        createdBy: v.string(),
     })
 });
