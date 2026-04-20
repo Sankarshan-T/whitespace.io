@@ -10,13 +10,21 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
-interface TeamProps {
+export interface TeamProps {
     createdBy: string;
     teamName: string;
     _id: String;
 };
 
-function TopSection({ user }: any) {
+interface TopSectionProps {
+    user: any;
+    setActiveTeamInfo: (info: any) => void;
+}
+
+function TopSection({
+    user,
+    setActiveTeamInfo,
+}: TopSectionProps) {
     const convex = useConvex();
     const router = useRouter();
     const [activeTeam, setActiveTeam] = useState<TeamProps>();
@@ -40,6 +48,10 @@ function TopSection({ user }: any) {
     useEffect(() => {
         user && getTeamList();
     }, [user]);
+
+    useEffect(() => {
+        activeTeam && setActiveTeamInfo(activeTeam);
+    }, [activeTeam])
 
     const getTeamList = async () => {
         const result = await convex.query(api.teams.getTeam, { email: user?.email });

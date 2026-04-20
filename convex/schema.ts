@@ -10,5 +10,13 @@ export default defineSchema({
     teams: defineTable({
         teamName: v.string(),
         createdBy: v.string(),
-    })
+    }),
+    files: defineTable({
+        fileName: v.string(),
+        teamId: v.string(),
+        createdBy: v.string(),
+        document: v.string(),
+        whiteboard: v.string(),
+        archived: v.boolean(),
+    }),
 });
