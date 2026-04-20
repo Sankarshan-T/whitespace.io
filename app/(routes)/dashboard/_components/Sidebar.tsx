@@ -4,13 +4,18 @@ import BottomSection from './BottomSection';
 
 function Sidebar() {
     const { user } = useKindeBrowserClient();
+
+    const createFile = (fileName: string) => {
+
+        console.log(fileName);
+    }
     return (
         <div className='h-screen sticky w-72 border-r p-6 flex flex-col' >
             <div className='flex-1'>
                 <TopSection user={user} />
             </div>
             <div>
-                <BottomSection />
+                <BottomSection createFile={createFile} />
             </div>
         </div>
     )

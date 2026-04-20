@@ -121,7 +121,7 @@ function TopSection({ user }: any) {
             </Popover>
 
             {/* other stuff */}
-            <Button variant={'outline'} className='w-full justify-start gap-x-2 py-5 font-bold mt-8 bg-muted'>
+            <Button variant={'outline'} className='w-full justify-start gap-x-2 py-5 font-medium mt-8 bg-muted'>
                 <LayoutGrid className='h-5 w-5' />
                 All files
             </Button>

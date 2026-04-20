@@ -10,6 +10,7 @@ function DashboardPage() {
     const convex = useConvex();
     const { user }: any = useKindeBrowserClient();
     const createUser = useMutation(api.user.createUser);
+    
 
     useEffect(() => {
         if (user) {
@@ -32,9 +33,7 @@ function DashboardPage() {
 
     return (
         <div>
-            <Button>
-                <LogoutLink>Logout</LogoutLink>
-            </Button>
+            
         </div>
     )
 }
