@@ -29,14 +29,12 @@ function DashboardLayout({
     }
 
     return (
-        <div>
-            <div className='grid grid-cols-4'>
-                <div>
-                    <Sidebar />
-                </div>
-                <div className="grid-cols-3">
-                    {children}
-                </div>
+        <div className='flex justify-start'>
+            <div className='h-screen w-72 sticky'>
+                <Sidebar />
+            </div>
+            <div className="mr-[calc(100vw-288px)] min-w-[calc(100vw-288px)]">
+                {children}
             </div>
         </div>
     )

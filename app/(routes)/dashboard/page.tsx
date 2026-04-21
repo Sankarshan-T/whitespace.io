@@ -5,12 +5,13 @@ import { api } from '@/convex/_generated/api';
 import { LogoutLink, useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useConvex, useMutation, useQuery } from 'convex/react';
 import { useEffect } from 'react'
+import Header from './_components/Header';
 
 function DashboardPage() {
     const convex = useConvex();
     const { user }: any = useKindeBrowserClient();
     const createUser = useMutation(api.user.createUser);
-    
+
 
     useEffect(() => {
         if (user) {
@@ -32,8 +33,8 @@ function DashboardPage() {
     }
 
     return (
-        <div>
-            
+        <div className='p-8'>
+            <Header />
         </div>
     )
 }
