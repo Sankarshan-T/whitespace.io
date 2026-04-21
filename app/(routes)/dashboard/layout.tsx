@@ -4,8 +4,9 @@ import { api } from '@/convex/_generated/api';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useConvex } from 'convex/react';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Sidebar from './_components/Sidebar';
+import { FilesListContext } from '@/app/_context/FilesListContex';
 
 function DashboardLayout({
     children,
@@ -15,6 +16,7 @@ function DashboardLayout({
     const convex = useConvex();
     const { user }: any = useKindeBrowserClient();
     const router = useRouter();
+    const [filesList_, setFilesList_] = useState();
 
     useEffect(() => {
         user && checkTeam();
@@ -29,14 +31,16 @@ function DashboardLayout({
     }
 
     return (
-        <div className='flex justify-start'>
-            <div className='h-screen w-72 sticky'>
-                <Sidebar />
+        <FilesListContext.Provider value={{ filesList_, setFilesList_ }}>
+            <div className='flex justify-start'>
+                <div className='h-screen w-72 sticky'>
+                    <Sidebar />
+                </div>
+                <div className="mr-[calc(100vw-288px)] min-w-[calc(100vw-288px)]">
+                    {children}
+                </div>
             </div>
-            <div className="mr-[calc(100vw-288px)] min-w-[calc(100vw-288px)]">
-                {children}
-            </div>
-        </div>
+        </FilesListContext.Provider>
     )
 }
 

@@ -17,15 +17,17 @@ function Header() {
                 <SendIcon className='h4 w-4' />
                 Invite
             </Button>
-            <div>
-                <Image
-                    src={user?.picture || ""}
-                    alt='User'
-                    height={30}
-                    width={30}
-                    className='rounded-full border-primary border-2'
-                />
-            </div>
+            {user?.picture && (
+                <div>
+                    <Image
+                        src={user?.picture}
+                        alt='User'
+                        height={30}
+                        width={30}
+                        className='rounded-full border-primary border-2'
+                    />
+                </div>
+            )}
         </div>
     )
 }
