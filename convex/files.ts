@@ -60,3 +60,21 @@ export const getFileById = query({
         return item;
     },
 });
+
+
+export const deleteFile = mutation({
+    args: { _id: v.id('files') },
+    handler: async (ctx, args) => {
+        return await ctx.db.delete(args._id);
+    },
+});
+
+export const renameFile = mutation({
+    args: {
+        _id: v.id('files'),
+        newName: v.string()
+    },
+    handler: async (ctx, args) => {
+        return await ctx.db.patch(args._id, { fileName: args.newName });
+    },
+});

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { useTheme } from "next-themes";
 
 const Excalidraw = dynamic(
     async () => (await import("@excalidraw/excalidraw")).Excalidraw,
@@ -18,6 +19,7 @@ interface CanvasProps {
 }
 
 export default function Canvas({ fileId, fileData }: CanvasProps) {
+    const { theme } = useTheme();
     const updateWhiteboard = useMutation(api.files.updateWhiteboard);
 
     const onCanvasChange = (elements: any, appState: any, files: any) => {
@@ -51,7 +53,7 @@ export default function Canvas({ fileId, fileData }: CanvasProps) {
     return (
         <div className="h-full w-full">
             <Excalidraw
-                theme="light"
+                theme={theme === "light" ? "light" : "dark"}
                 initialData={{
                     elements: initialData?.elements || [],
                     appState: initialData?.appState || { zenModeEnabled: false },

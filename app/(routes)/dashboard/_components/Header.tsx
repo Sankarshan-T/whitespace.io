@@ -1,3 +1,4 @@
+import { ModeToggle } from '@/components/modetoggle';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
@@ -18,7 +19,8 @@ function Header() {
                 Invite
             </Button> */}
             {user?.picture && (
-                <div>
+                <div className='flex gap-x-2 items-center mr-10'>
+                    <h2>{user?.given_name}</h2>
                     <Image
                         src={user?.picture}
                         alt='User'
@@ -29,6 +31,7 @@ function Header() {
                     />
                 </div>
             )}
+            <ModeToggle />
         </div>
     )
 }

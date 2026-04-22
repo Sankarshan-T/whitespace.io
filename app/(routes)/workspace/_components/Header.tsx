@@ -3,30 +3,35 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { WorkspaceMode, WorkspaceState } from '@/types/workspacetypes';
-import { Link } from 'lucide-react';
+import { LinkIcon } from 'lucide-react';
+import Link from 'next/link';
 import Image from 'next/image';
-import React from 'react'
+import { ModeToggle } from '@/components/modetoggle';
 
 interface HeaderProps {
     setWorkspaceState: (newState: WorkspaceState) => void;
     workspaceState: WorkspaceState;
+    title: string;
 }
 
 function Header({
     setWorkspaceState,
-    workspaceState
+    workspaceState,
+    title,
 }: HeaderProps) {
 
     return (
         <div className='p-3 border-b flex items-center justify-between'>
             <div className='flex items-center gap-x-2'>
-                <Image
-                    src={'/logo.svg'}
-                    alt='logo'
-                    height={40}
-                    width={40}
-                />
-                <h2 className='text-xl'>Filename</h2>
+                <Link href={'/dashboard'}>
+                    <Image
+                        src={'/logo.svg'}
+                        alt='logo'
+                        height={40}
+                        width={40}
+                    />
+                </Link>
+                <h2 className='text-xl'>{title}</h2>
             </div>
             <div className='flex items-center gap-x-2'>
                 <Button
@@ -52,10 +57,11 @@ function Header({
                     Canvas
                 </Button>
             </div>
-            <Button size={'lg'}>
+            {/* <Button size={'lg'}>
                 Share
-                <Link className='h-4 w-4' />
-            </Button>
+                <LinkIcon className='h-4 w-4' />
+            </Button> */}
+            <ModeToggle />
         </div>
     )
 }

@@ -1,10 +1,11 @@
 "use client";
-import React, { use, useState } from 'react';
+import { use, useState } from 'react';
 import Header from '../_components/Header';
 import dynamic from 'next/dynamic';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { WorkspaceMode, WorkspaceState } from '@/types/workspacetypes';
+
 const Editor = dynamic(() => import("../_components/Editor"), {
     ssr: false,
     loading: () => <p>Loading Editor...</p>
@@ -40,6 +41,7 @@ function Workspace({ params }: { params: Promise<{ fileId: any }> }) {
             <Header
                 setWorkspaceState={setWorkspaceState}
                 workspaceState={workspaceState}
+                title={fileData?.fileName || "File name"}
             />
             {workspaceState.mode === WorkspaceMode.Document &&
                 <div className='grid grid-cols-1 lg:grid-cols-1 h-[calc(100vh-62px)] w-screen'>
@@ -49,6 +51,7 @@ function Workspace({ params }: { params: Promise<{ fileId: any }> }) {
                             <Editor
                                 onChange={onDocumentChange}
                                 initialContent={fileData.document}
+                                title={fileData?.fileName}
                             />
                         ) : (
                             <div className="p-10">Loading document...</div>
@@ -73,6 +76,7 @@ function Workspace({ params }: { params: Promise<{ fileId: any }> }) {
                             <Editor
                                 onChange={onDocumentChange}
                                 initialContent={fileData.document}
+                                title={fileData?.fileName}
                             />
                         ) : (
                             <div className="p-10">Loading document...</div>
@@ -97,6 +101,7 @@ function Workspace({ params }: { params: Promise<{ fileId: any }> }) {
                             <Editor
                                 onChange={onDocumentChange}
                                 initialContent={fileData.document}
+                                title={fileData?.fileName}
                             />
                         ) : (
                             <div className="p-10">Loading document...</div>

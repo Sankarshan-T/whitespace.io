@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
+import Link from 'next/link';
 
 export interface TeamProps {
     createdBy: string;
@@ -248,10 +249,13 @@ function TopSection({
             </div>
             <div className='space-y-3 mt-5'>
                 {filesList?.map((file: FileProps, index: number) => (
-                    <Button variant={'outline'} className='w-full justify-start gap-x-2 py-5 font-medium bg-muted' key={index}>
-                        <File className='h-5 w-5' />
-                        {file.fileName}
-                    </Button>
+                    <Link href={`/workspace/${file._id}`}>
+                        <Button variant={'outline'} className='w-full justify-start gap-x-2 py-5 font-medium bg-muted' key={index}>
+
+                            <File className='h-5 w-5' />
+                            {file.fileName}
+                        </Button>
+                    </Link>
                 ))}
             </div>
         </div>

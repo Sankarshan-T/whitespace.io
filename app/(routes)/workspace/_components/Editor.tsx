@@ -11,9 +11,10 @@ import { useEffect, useState } from "react";
 interface EditorProps {
     onChange: (value: string) => void;
     initialContent?: string;
+    title: string;
 }
 
-function Editor({ initialContent, onChange }: EditorProps) {
+function Editor({ initialContent, onChange, title }: EditorProps) {
     const { theme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
@@ -62,7 +63,8 @@ function Editor({ initialContent, onChange }: EditorProps) {
     if (!mounted) return null;
 
     return (
-        <div className="ml-2 mt-2">
+        <div className="ml-4 mt-2">
+            <h1 className="text-4xl font-semibold underline mb-4">{title}</h1>
             <BlockNoteView
                 editor={editor}
                 onChange={() => {
