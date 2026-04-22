@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 export interface FileProps {
     archive: boolean;
@@ -30,10 +31,15 @@ function FilesList() {
     const { filesList_, setFilesList_ } = useContext(FilesListContext);
     const [filesList, setFilesList] = useState<FileProps[]>();
     const { user } = useKindeBrowserClient();
+    const router = useRouter();
 
     useEffect(() => {
         filesList_ && setFilesList(filesList_);
     }, [filesList_]);
+
+    const onRedirect = (fileId: string) => {
+        router.push(`/workspace/${fileId}`);
+    };
 
     return (
         <div className="overflow-x-auto mt-10">
@@ -50,7 +56,11 @@ function FilesList() {
 
                 <tbody className="divide-y divide-gray-200">
                     {filesList?.map((file: FileProps, index: number) => (
-                        <tr className="*:text-foreground *:first:font-medium" key={index}>
+                        <tr
+                            className="*:text-foreground *:first:font-medium cursor-pointer"
+                            key={index}
+                            onClick={() => onRedirect(file._id)}
+                        >
                             <td className="px-3 py-2 whitespace-nowrap">{file.fileName} </td>
                             <td className="px-3 py-2 whitespace-nowrap">{moment(file._creationTime).format('DD MMM YYYY')} </td>
                             <td className="px-3 py-2 whitespace-nowrap">{moment(file._creationTime).format('DD MMM YYYY')} </td>

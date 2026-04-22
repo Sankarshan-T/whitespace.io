@@ -28,3 +28,24 @@ export const getFiles = query({
         return result;
     },
 });
+
+export const updateDocument = mutation({
+    args: {
+        _id: v.id('files'),
+        document: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const result = ctx.db.patch(args._id, { document: args.document });
+        return result;
+    },
+});
+
+export const getFileById = query({
+    args: {
+        fileId: v.id('files')
+    },
+    handler: async (ctx, args) => {
+        const item = await ctx.db.get(args.fileId);
+        return item;
+    },
+});
