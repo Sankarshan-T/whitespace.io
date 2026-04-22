@@ -23,4 +23,29 @@ export const createTeam = mutation({
         const result = await ctx.db.insert("teams", args);
         return result;
     },
-})
+});
+
+export const updateTeamName = mutation({
+    args: {
+        teamId: v.id("teams"),
+        newName: v.string(),
+    },
+    handler: async (ctx, args) => {
+        await ctx.db.patch(args.teamId, { teamName: args.newName });
+    },
+});
+
+export const deleteTeam = mutation({
+    args: { teamId: v.id("teams") },
+    handler: async (ctx, args) => {
+        await ctx.db.delete(args.teamId);
+
+        const files = await ctx.db.query('files')
+            .filter(q => q.eq(q.field('teamId'), args.teamId))
+            .collect();
+
+        for (const file of files) {
+            await ctx.db.delete(file._id);
+        }
+    },
+});

@@ -1,4 +1,4 @@
-import { Archive, Flag } from 'lucide-react';
+import { Archive, Flag, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -38,6 +38,7 @@ function BottomSection({ createFile }: any) {
     const onCreateFile = (file: string) => {
         createFile(file);
         setFileName('');
+        window.location.reload();
     }
 
     return (
@@ -45,8 +46,9 @@ function BottomSection({ createFile }: any) {
             {/* adding this for creating a new file? */}
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button className='w-full py-5 mb-3 cursor-pointer' >
+                    <Button className='w-full py-5 mb-3 cursor-pointer flex items-center justify-between' >
                         New file
+                        <PlusCircle />
                     </Button>
                 </DialogTrigger>
                 <DialogContent className='animate-in'>
@@ -75,12 +77,12 @@ function BottomSection({ createFile }: any) {
             </Dialog>
 
 
-            {menuList.map((menu, index) => (
+            {/* {menuList.map((menu, index) => (
                 <h2 className='flex gap-x-2 p-2 text-sm hover:bg-sidebar-accent-foreground/20 transition rounded-md cursor-pointer' key={index}>
                     <menu.icon />
                     {menu.name}
                 </h2>
-            ))}
+            ))} */}
         </div>
     )
 }

@@ -1,3 +1,4 @@
+import { FilesListContext } from '@/app/_context/FilesListContex';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
@@ -5,10 +6,22 @@ import { api } from '@/convex/_generated/api';
 import { cn } from '@/lib/utils';
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs';
 import { useConvex } from 'convex/react';
-import { ChevronDown, LayoutGrid, LogOut, Settings, Users } from 'lucide-react';
+import { ChevronDown, Edit2, File, LayoutGrid, LogOut, Settings, Trash2, Users } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { FileProps } from './FilesList';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
 
 export interface TeamProps {
     createdBy: string;
@@ -29,6 +42,53 @@ function TopSection({
     const router = useRouter();
     const [activeTeam, setActiveTeam] = useState<TeamProps>();
     const [teamList, setTeamList] = useState<TeamProps[]>();
+    const { filesList_, setFilesList_ } = useContext(FilesListContext);
+    const [filesList, setFilesList] = useState<FileProps[]>();
+    const updateTeamName = useMutation(api.teams.updateTeamName);
+    const deleteTeam = useMutation(api.teams.deleteTeam);
+
+    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+    const [newTeamName, setNewTeamName] = useState("");
+
+    useEffect(() => {
+        filesList_ && setFilesList(filesList_);
+    }, [filesList_]);
+
+    const onRedirect = (fileId: string) => {
+        router.push(`/workspace/${fileId}`);
+    };
+
+    const onSettingsClick = () => {
+        setNewTeamName(activeTeam?.teamName || "");
+        setIsSettingsOpen(true);
+    };
+
+    const handleUpdateName = async () => {
+        try {
+            await updateTeamName({
+                teamId: activeTeam?._id as any,
+                newName: newTeamName
+            });
+            toast.success("Team renamed!");
+            getTeamList();
+        } catch (e) {
+            toast.error("Failed to rename team");
+        }
+    };
+
+    const handleDeleteTeam = async () => {
+        const confirm = window.confirm("Are you absolutely sure? This will delete all files in this team.");
+        if (!confirm) return;
+
+        try {
+            await deleteTeam({ teamId: activeTeam?._id as any });
+            toast.success("Team deleted");
+            setIsSettingsOpen(false);
+            getTeamList();
+        } catch (e) {
+            toast.error("Error deleting team");
+        }
+    };
 
     const menu = [
         {
@@ -40,7 +100,7 @@ function TopSection({
         {
             id: 2,
             name: 'Settings',
-            path: '',
+            path: `/dashboard/settings/${activeTeam?._id}`,
             icon: Settings,
         },
     ];
@@ -61,7 +121,9 @@ function TopSection({
     };
 
     const onMenuClick = (item: any) => {
-        if (item.path) {
+        if (item.name === 'Settings') {
+            onSettingsClick();
+        } else if (item.path) {
             router.push(item.path);
         }
     };
@@ -132,11 +194,66 @@ function TopSection({
                 </PopoverContent>
             </Popover>
 
-            {/* other stuff */}
-            <Button variant={'outline'} className='w-full justify-start gap-x-2 py-5 font-medium mt-8 bg-muted'>
+            <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
+                <DialogContent className="max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Team Settings</DialogTitle>
+                        <DialogDescription>
+                            Manage your team workspace and preferences.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="space-y-6 py-4">
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold flex items-center gap-2">
+                                <Edit2 className="h-4 w-4" /> Rename Team
+                            </label>
+                            <div className="flex gap-2">
+                                <Input
+                                    value={newTeamName}
+                                    onChange={(e) => setNewTeamName(e.target.value)}
+                                    placeholder="Team Name"
+                                />
+                                <Button onClick={handleUpdateName}>Update</Button>
+                            </div>
+                        </div>
+
+                        <Separator />
+
+                        <div className="space-y-3">
+                            <label className="text-sm font-semibold text-red-500 flex items-center gap-2">
+                                <Trash2 className="h-4 w-4" /> Danger Zone
+                            </label>
+                            <div className="p-4 border border-red-200 bg-red-50 dark:bg-red-950/20 rounded-lg">
+                                <p className="text-xs text-red-600 dark:text-red-400 mb-3">
+                                    Once you delete a team, there is no going back. All files will be permanently removed.
+                                </p>
+                                <Button
+                                    variant="destructive"
+                                    className="w-full"
+                                    onClick={handleDeleteTeam}
+                                >
+                                    Delete this team
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            {/* other files stuff... */}
+            <div className='w-full flex items-center justify-start gap-x-2 py-1 font-medium mt-8'>
                 <LayoutGrid className='h-5 w-5' />
-                All files
-            </Button>
+                All files:
+            </div>
+            <div className='space-y-3 mt-5'>
+                {filesList?.map((file: FileProps, index: number) => (
+                    <Button variant={'outline'} className='w-full justify-start gap-x-2 py-5 font-medium bg-muted' key={index}>
+                        <File className='h-5 w-5' />
+                        {file.fileName}
+                    </Button>
+                ))}
+            </div>
         </div>
     )
 }

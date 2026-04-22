@@ -1,3 +1,4 @@
+import { ModeToggle } from '@/components/modetoggle'
 import { Button } from '@/components/ui/button'
 import { LoginLink, RegisterLink } from '@kinde-oss/kinde-auth-nextjs'
 import Image from 'next/image'
@@ -6,7 +7,7 @@ import React from 'react'
 
 function Navbar() {
     return (
-        <header className="sticky bg-sidebar border-b-2 backdrop-blur-2xl text-sidebar-foreground">
+        <header className="sticky top-0 left-0 border-b-2 backdrop-blur-xl bg-transparent text-sidebar-foreground">
             <div className="mx-auto flex h-16 max-w-7xl items-center gap-8 px-4 sm:px-6 lg:px-8">
                 <a className='flex items-center justify-between gap-x-2 ' href="/">
                     <Image
@@ -21,10 +22,7 @@ function Navbar() {
                 <div className="flex flex-1 items-center justify-end md:justify-between">
                     <nav aria-label="Global" className="hidden md:block space-x-2">
                         <a href="/" className='hover:bg-muted-foreground/30 transition p-2.5 rounded-md'>Home</a>
-                        <a href="/" className='hover:bg-muted-foreground/30 transition p-2.5 rounded-md'>link1</a>
-                        <a href="/" className='hover:bg-muted-foreground/30 transition p-2.5 rounded-md'>link2</a>
-                        <a href="/" className='hover:bg-muted-foreground/30 transition p-2.5 rounded-md'>link3</a>
-                        <a href="/" className='hover:bg-muted-foreground/30 transition p-2.5 rounded-md'>link4</a>
+                        <a href="/dashboard" className='hover:bg-muted-foreground/30 transition p-2.5 rounded-md'>Dashboard</a>
                     </nav>
 
                     <div className="flex items-center gap-4">
@@ -43,6 +41,7 @@ function Navbar() {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
                             </svg>
                         </button>
+                        <ModeToggle />
                     </div>
                 </div>
             </div>

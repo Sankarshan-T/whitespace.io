@@ -1,6 +1,6 @@
 import { FilesListContext } from '@/app/_context/FilesListContex';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
-import { Archive, MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, Trash } from 'lucide-react';
 import moment from 'moment';
 import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
@@ -65,15 +65,19 @@ function FilesList() {
                             <td className="px-3 py-2 whitespace-nowrap">{moment(file._creationTime).format('DD MMM YYYY')} </td>
                             <td className="px-3 py-2 whitespace-nowrap">{moment(file._creationTime).format('DD MMM YYYY')} </td>
                             <td className="px-3 py-2 whitespace-nowrap">
-                                {user?.picture &&
-                                    <Image
-                                        src={user?.picture}
-                                        alt='User'
-                                        height={30}
-                                        width={30}
-                                        className='rounded-full border-primary border-2'
-                                        title={`${user.given_name}`}
-                                    />
+                                {user?.picture && (
+                                    <div className='flex gap-x-2 items-center'>
+                                        <Image
+                                            src={user?.picture}
+                                            alt='User'
+                                            height={30}
+                                            width={30}
+                                            className='rounded-full border-primary border-2'
+                                            title={`${user.given_name}`}
+                                        />
+                                        <div>{user.given_name}</div>
+                                    </div>
+                                )
                                 }
                             </td>
                             <td className="px-3 py-2 whitespace-nowrap">
@@ -88,8 +92,8 @@ function FilesList() {
                                             <DropdownMenuLabel>More</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuItem>
-                                                <Archive className='h-4 w-4' />
-                                                Archive
+                                                <Trash className='h-4 w-4' />
+                                                Delete
                                             </DropdownMenuItem>
                                         </DropdownMenuGroup>
                                     </DropdownMenuContent>

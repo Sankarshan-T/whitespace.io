@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function Hero() {
     return (
-        <section className="bg-background w-screen h-[calc(100vh-66px)] flex items-center justify-center">
+        <section className="bg-transparent w-screen h-[calc(100vh-66px)] flex items-center justify-center">
             <div className="w-full h-full flex items-center justify-center">
                 <div className="mx-auto max-w-prose text-center">
                     <h1 className="text-4xl font-bold text-primary sm:text-5xl">
-                        Design ideas at the speed
-                        <strong className="text-blue-600"> speed </strong>
+                        Design ideas at the
+                        <strong className="text-violet-900"> speed </strong>
                         of thought
                     </h1>
 
@@ -17,7 +18,9 @@ function Hero() {
 
                     <div className="mt-4 flex justify-center gap-4 sm:mt-6">
                         <Button size={"lg"} className="hover:scale-105 transition rounded-md py-5 px-3 text-md">
-                            Get Started
+                            <Link href={'/dashboard'}>
+                                Get Started
+                            </Link>
                         </Button>
                     </div>
                 </div>
